@@ -104,6 +104,7 @@ namespace util {
 		Utf8String(const char *str, size_t count);
 		Utf8String(const char16_t *str);
 		Utf8String(const char16_t *str, size_t count);
+		Utf8String(const int32_t *str, size_t count);
 		Utf8String &operator=(const Utf8String &str);
 		Utf8String &operator=(const Utf8StringView &str);
 		Utf8String &operator=(const std::string &str);

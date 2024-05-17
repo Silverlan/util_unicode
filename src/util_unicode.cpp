@@ -78,6 +78,7 @@ Utf8String::Utf8String(const char *str) : BaseUtf8String {std::make_unique<icu::
 Utf8String::Utf8String(const char *str, size_t count) : BaseUtf8String {std::make_unique<icu::UnicodeString>(icu::UnicodeString::fromUTF8(icu::StringPiece {str, static_cast<int32_t>(count)}))} {}
 Utf8String::Utf8String(const char16_t *str) : BaseUtf8String {std::make_unique<icu::UnicodeString>(str)} {}
 Utf8String::Utf8String(const char16_t *str, size_t count) : BaseUtf8String {std::make_unique<icu::UnicodeString>(str, count)} {}
+Utf8String::Utf8String(const int32_t *str, size_t count) : BaseUtf8String {std::make_unique<icu::UnicodeString>(icu::UnicodeString::fromUTF32(str, count))} {}
 Utf8String &Utf8String::operator=(const Utf8String &str)
 {
 	m_string = std::make_unique<icu::UnicodeString>(*str.m_string);
