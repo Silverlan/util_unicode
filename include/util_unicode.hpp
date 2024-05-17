@@ -18,10 +18,13 @@ namespace icu_75 {
 namespace util {
 	class Utf8String;
 	class BaseUtf8String;
+	using Char8 = char;
+	using Char16 = char16_t;
+	using Char32 = int32_t;
 	class DLLUUNIC UnicodeStringIterator {
 	  public:
 		friend Utf8String;
-		using value_type = char16_t;
+		using value_type = Char32;
 		UnicodeStringIterator(const BaseUtf8String &str);
 		UnicodeStringIterator(const UnicodeStringIterator &it);
 		~UnicodeStringIterator();
@@ -29,7 +32,7 @@ namespace util {
 		bool operator<(const UnicodeStringIterator &other) const;
 		bool operator>(const UnicodeStringIterator &other) const;
 
-		char16_t operator*() const;
+		Char32 operator*() const;
 		UnicodeStringIterator &operator++();
 		UnicodeStringIterator &operator--();
 		UnicodeStringIterator operator+(int32_t idx) const;
@@ -49,8 +52,9 @@ namespace util {
 		friend UnicodeStringIterator;
 		~BaseUtf8String();
 		std::string cpp_str() const;
-		size_t find(char c, size_t startPos = 0) const;
-		size_t find(char16_t c, size_t startPos = 0) const;
+		size_t find(Char8 c, size_t startPos = 0) const;
+		size_t find(Char16 c, size_t startPos = 0) const;
+		size_t find(Char32 c, size_t startPos = 0) const;
 		size_t find(const char *str, size_t startPos = 0) const;
 		size_t find(const std::string &str, size_t startPos = 0) const;
 		size_t find(const BaseUtf8String &str, size_t startPos = 0) const;
@@ -91,8 +95,10 @@ namespace util {
 	  public:
 		friend Utf8StringView;
 		Utf8String();
-		Utf8String(char16_t c);
+		Utf8String(Char16 c);
+		Utf8String(Char32 c);
 		Utf8String(const Utf8String &str);
+		Utf8String(const Utf8StringView &str);
 		Utf8String(const std::string &str);
 		Utf8String(const char *str);
 		Utf8String(const char *str, size_t count);
@@ -109,21 +115,23 @@ namespace util {
 		Utf8String operator+(const std::string &str) const;
 		Utf8String operator+(const char *str) const;
 		Utf8String operator+(const char16_t *str) const;
-		Utf8String operator+(char c) const;
-		Utf8String operator+(char16_t c) const;
+		Utf8String operator+(Char8 c) const;
+		Utf8String operator+(Char16 c) const;
+		Utf8String operator+(Char32 c) const;
 
 		Utf8String &operator+=(const Utf8String &str);
 		Utf8String &operator+=(const Utf8StringView &str);
 		Utf8String &operator+=(const std::string &str);
 		Utf8String &operator+=(const char *str);
 		Utf8String &operator+=(const char16_t *str);
-		Utf8String &operator+=(char c);
-		Utf8String &operator+=(char16_t c);
+		Utf8String &operator+=(Char8 c);
+		Utf8String &operator+=(Char16 c);
+		Utf8String &operator+=(Char32 c);
 
 		Utf8String &replace(int32_t start, int32_t len, const Utf8StringArg &str);
 		UnicodeStringIterator erase(const UnicodeStringIterator &it, size_t count = 1);
 		UnicodeStringIterator erase(const UnicodeStringIterator &it, const UnicodeStringIterator &itEnd);
-		void insert(const UnicodeStringIterator &it, const Utf8String &str);
+		void insert(const UnicodeStringIterator &it, const Utf8StringArg &str);
 		Utf8String substr(size_t start, size_t count = std::numeric_limits<size_t>::max()) const;
 		void clear();
 	};

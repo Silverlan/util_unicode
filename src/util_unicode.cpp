@@ -16,12 +16,17 @@ const icu_75::UnicodeString &BaseUtf8String::GetIcuString() const { return *m_st
 size_t BaseUtf8String::length() const { return m_string->length(); }
 size_t BaseUtf8String::size() const { return m_string->length(); }
 
-size_t BaseUtf8String::find(char c, size_t startPos) const
+size_t BaseUtf8String::find(Char8 c, size_t startPos) const
 {
 	auto pos = m_string->indexOf(c);
 	return (pos >= 0) ? pos : std::string::npos;
 }
-size_t BaseUtf8String::find(char16_t c, size_t startPos) const
+size_t BaseUtf8String::find(Char16 c, size_t startPos) const
+{
+	auto pos = m_string->indexOf(c);
+	return (pos >= 0) ? pos : std::string::npos;
+}
+size_t BaseUtf8String::find(Char32 c, size_t startPos) const
 {
 	auto pos = m_string->indexOf(c);
 	return (pos >= 0) ? pos : std::string::npos;
@@ -64,9 +69,11 @@ bool BaseUtf8String::operator>(const BaseUtf8String &other) const { return m_str
 ////////////////////
 
 Utf8String::Utf8String() : BaseUtf8String {} {}
-Utf8String::Utf8String(char16_t c) : Utf8String {} { *this += c; }
+Utf8String::Utf8String(Char16 c) : Utf8String {} { *this += c; }
+Utf8String::Utf8String(Char32 c) : Utf8String {} { *this += c; }
 Utf8String::Utf8String(const Utf8String &str) : BaseUtf8String {std::make_unique<icu::UnicodeString>(*str.m_string)} {}
-Utf8String::Utf8String(const std::string &str) : BaseUtf8String {std::make_unique<icu::UnicodeString>(str.c_str())} {}
+Utf8String::Utf8String(const Utf8StringView &str) : BaseUtf8String {std::make_unique<icu::UnicodeString>(*str.m_string)} {}
+Utf8String::Utf8String(const std::string &str) : BaseUtf8String {std::make_unique<icu::UnicodeString>(icu::UnicodeString::fromUTF8(str))} {}
 Utf8String::Utf8String(const char *str) : BaseUtf8String {std::make_unique<icu::UnicodeString>(icu::UnicodeString::fromUTF8(icu::StringPiece {str}))} {}
 Utf8String::Utf8String(const char *str, size_t count) : BaseUtf8String {std::make_unique<icu::UnicodeString>(icu::UnicodeString::fromUTF8(icu::StringPiece {str, static_cast<int32_t>(count)}))} {}
 Utf8String::Utf8String(const char16_t *str) : BaseUtf8String {std::make_unique<icu::UnicodeString>(str)} {}
@@ -83,12 +90,12 @@ Utf8String &Utf8String::operator=(const Utf8StringView &str)
 }
 Utf8String &Utf8String::operator=(const std::string &str)
 {
-	m_string = std::make_unique<icu::UnicodeString>(str.c_str());
+	m_string = std::make_unique<icu::UnicodeString>(icu::UnicodeString::fromUTF8(icu::StringPiece {str}));
 	return *this;
 }
 Utf8String &Utf8String::operator=(const char *str)
 {
-	m_string = std::make_unique<icu::UnicodeString>(str);
+	m_string = std::make_unique<icu::UnicodeString>(icu::UnicodeString::fromUTF8(icu::StringPiece {str}));
 	return *this;
 }
 Utf8String &Utf8String::operator=(const char16_t *str)
@@ -127,13 +134,19 @@ Utf8String Utf8String::operator+(const char16_t *str) const
 	cpy.operator+=(str);
 	return cpy;
 }
-Utf8String Utf8String::operator+(char c) const
+Utf8String Utf8String::operator+(Char8 c) const
 {
 	auto cpy = *this;
 	cpy.operator+=(c);
 	return cpy;
 }
-Utf8String Utf8String::operator+(char16_t c) const
+Utf8String Utf8String::operator+(Char16 c) const
+{
+	auto cpy = *this;
+	cpy.operator+=(c);
+	return cpy;
+}
+Utf8String Utf8String::operator+(Char32 c) const
 {
 	auto cpy = *this;
 	cpy.operator+=(c);
@@ -153,12 +166,17 @@ Utf8String &Utf8String::operator+=(const Utf8StringView &str)
 Utf8String &Utf8String::operator+=(const std::string &str) { return operator+=(Utf8String {str}); }
 Utf8String &Utf8String::operator+=(const char *str) { return operator+=(Utf8String {str}); }
 Utf8String &Utf8String::operator+=(const char16_t *str) { return operator+=(Utf8String {str}); }
-Utf8String &Utf8String::operator+=(char c)
+Utf8String &Utf8String::operator+=(Char8 c)
 {
 	*m_string += c;
 	return *this;
 }
-Utf8String &Utf8String::operator+=(char16_t c)
+Utf8String &Utf8String::operator+=(Char16 c)
+{
+	*m_string += c;
+	return *this;
+}
+Utf8String &Utf8String::operator+=(Char32 c)
 {
 	*m_string += c;
 	return *this;
@@ -185,9 +203,11 @@ UnicodeStringIterator Utf8String::erase(const UnicodeStringIterator &it, const U
 		return it;
 	return erase(it, (idx1 - idx0) + 1);
 }
-void Utf8String::insert(const UnicodeStringIterator &it, const Utf8String &str) { m_string->insert(it.iterator->getIndex(), *str.m_string); }
+void Utf8String::insert(const UnicodeStringIterator &it, const Utf8StringArg &str) { m_string->insert(it.iterator->getIndex(), str->GetIcuString()); }
 Utf8String Utf8String::substr(size_t start, size_t count) const
 {
+	if(count > INT32_MAX)
+		count = INT32_MAX;
 	auto sub = m_string->tempSubString(start, count);
 	return Utf8String {sub.getTerminatedBuffer()};
 }
@@ -211,6 +231,8 @@ Utf8StringView &Utf8StringView::operator=(const Utf8StringView &str)
 }
 Utf8StringView Utf8StringView::substr(size_t start, size_t count) const
 {
+	if(count > INT32_MAX)
+		count = INT32_MAX;
 	Utf8StringView sub {};
 	sub.m_string->fastCopyFrom(m_string->tempSubString(start, count));
 	return sub;
@@ -225,14 +247,14 @@ UnicodeStringIterator::UnicodeStringIterator(const UnicodeStringIterator &it) : 
 
 UnicodeStringIterator::~UnicodeStringIterator() {}
 
-bool UnicodeStringIterator::operator<(const UnicodeStringIterator &other) const { return iterator->current() < other.iterator->current(); }
-bool UnicodeStringIterator::operator>(const UnicodeStringIterator &other) const { return iterator->current() > other.iterator->current(); }
+bool UnicodeStringIterator::operator<(const UnicodeStringIterator &other) const { return iterator->current32() < other.iterator->current32(); }
+bool UnicodeStringIterator::operator>(const UnicodeStringIterator &other) const { return iterator->current32() > other.iterator->current32(); }
 
-char16_t UnicodeStringIterator::operator*() const { return iterator->current(); }
+Char32 UnicodeStringIterator::operator*() const { return iterator->current32(); }
 
 UnicodeStringIterator &UnicodeStringIterator::operator++()
 {
-	UChar c = iterator->next();
+	auto c = iterator->next32();
 	if(c == icu::CharacterIterator::DONE)
 		done = true;
 	return *this;
@@ -240,7 +262,7 @@ UnicodeStringIterator &UnicodeStringIterator::operator++()
 
 UnicodeStringIterator &UnicodeStringIterator::operator--()
 {
-	UChar c = iterator->previous();
+	auto c = iterator->previous32();
 	if(c == icu::CharacterIterator::DONE)
 		done = true;
 	return *this;
