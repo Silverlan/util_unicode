@@ -65,9 +65,9 @@ namespace util {
 		size_t length() const;
 		size_t size() const;
 		bool empty() const { return length() == 0; }
-		uint16_t at(size_t idx) const;
-		uint16_t front() const;
-		uint16_t back() const;
+		Char32 at(size_t idx) const;
+		Char32 front() const;
+		Char32 back() const;
 
 		void toUpper();
 		void toLower();

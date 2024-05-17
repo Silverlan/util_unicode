@@ -38,9 +38,9 @@ size_t BaseUtf8String::find(const char *str, size_t startPos) const
 }
 size_t BaseUtf8String::find(const std::string &str, size_t startPos) const { return find(str.data(), startPos); }
 size_t BaseUtf8String::find(const BaseUtf8String &strU8, size_t startPos) const { return m_string->indexOf(*strU8.m_string, startPos); }
-uint16_t BaseUtf8String::at(size_t idx) const { return m_string->charAt(idx); }
-uint16_t BaseUtf8String::front() const { return m_string->charAt(0); }
-uint16_t BaseUtf8String::back() const { return m_string->charAt(m_string->length() - 1); }
+Char32 BaseUtf8String::at(size_t idx) const { return m_string->char32At(idx); }
+Char32 BaseUtf8String::front() const { return m_string->char32At(0); }
+Char32 BaseUtf8String::back() const { return m_string->char32At(m_string->length() - 1); }
 void BaseUtf8String::toUpper() { m_string->toUpper(); }
 void BaseUtf8String::toLower() { m_string->toLower(); }
 UnicodeStringIterator BaseUtf8String::begin() const { return *this; }
