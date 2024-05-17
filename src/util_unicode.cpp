@@ -192,7 +192,12 @@ UnicodeStringIterator Utf8String::erase(const UnicodeStringIterator &it, size_t 
 	m_string->removeBetween(idx, idx + count);
 
 	UnicodeStringIterator newIt {};
-	*newIt.iterator = icu::StringCharacterIterator {*m_string, idx};
+	if(m_string->isEmpty()) {
+		newIt.iterator = std::make_unique<icu::StringCharacterIterator>(*m_string);
+		newIt.done = true;
+	}
+	else
+		newIt.iterator = std::make_unique<icu::StringCharacterIterator>(*m_string, idx);
 	return newIt;
 }
 UnicodeStringIterator Utf8String::erase(const UnicodeStringIterator &it, const UnicodeStringIterator &itEnd)
