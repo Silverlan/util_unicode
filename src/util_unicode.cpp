@@ -13,8 +13,8 @@ BaseUtf8String::BaseUtf8String(std::unique_ptr<icu_75::UnicodeString> &&str) : m
 BaseUtf8String::~BaseUtf8String() {}
 icu_75::UnicodeString &BaseUtf8String::GetIcuString() { return *m_string; }
 const icu_75::UnicodeString &BaseUtf8String::GetIcuString() const { return *m_string; }
-size_t BaseUtf8String::length() const { return m_string->length(); }
-size_t BaseUtf8String::size() const { return m_string->length(); }
+size_t BaseUtf8String::length() const { return m_string->countChar32(); }
+size_t BaseUtf8String::size() const { return length(); }
 
 size_t BaseUtf8String::find(Char8 c, size_t startPos) const
 {
