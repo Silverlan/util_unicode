@@ -32,13 +32,14 @@ namespace util {
 
 		bool operator<(const UnicodeStringIterator &other) const;
 		bool operator>(const UnicodeStringIterator &other) const;
+		bool operator==(const UnicodeStringIterator &other) const;
+		bool operator!=(const UnicodeStringIterator &other) const;
 
 		Char32 operator*() const;
 		UnicodeStringIterator &operator++();
 		UnicodeStringIterator &operator--();
 		UnicodeStringIterator operator+(int32_t idx) const;
 		UnicodeStringIterator &operator+=(int32_t idx);
-		bool operator!=(const UnicodeStringIterator &other) const;
 		UnicodeStringIterator &operator=(const UnicodeStringIterator &other);
 	  private:
 		friend BaseUtf8String;

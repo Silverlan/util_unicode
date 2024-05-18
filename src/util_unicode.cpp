@@ -255,6 +255,17 @@ UnicodeStringIterator::~UnicodeStringIterator() {}
 
 bool UnicodeStringIterator::operator<(const UnicodeStringIterator &other) const { return iterator->current32() < other.iterator->current32(); }
 bool UnicodeStringIterator::operator>(const UnicodeStringIterator &other) const { return iterator->current32() > other.iterator->current32(); }
+bool UnicodeStringIterator::operator==(const UnicodeStringIterator &other) const
+{
+	if(done && other.done)
+		return true;
+	if(done != other.done || (!iterator && other.iterator) || (iterator && !other.iterator))
+		return false;
+	if(!iterator && !other.iterator)
+		return true;
+	return *iterator == *other.iterator;
+}
+bool UnicodeStringIterator::operator!=(const UnicodeStringIterator &other) const { return !operator==(other); }
 
 Char32 UnicodeStringIterator::operator*() const { return iterator->current32(); }
 
@@ -292,8 +303,6 @@ UnicodeStringIterator &UnicodeStringIterator::operator+=(int32_t idx)
 		operator--();
 	return *this;
 }
-
-bool UnicodeStringIterator::operator!=(const UnicodeStringIterator &other) const { return !done; }
 
 UnicodeStringIterator &UnicodeStringIterator::operator=(const UnicodeStringIterator &other)
 {
