@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 #include <ostream>
+#include <limits>
 
 namespace icu_75 {
 	class StringCharacterIterator;
