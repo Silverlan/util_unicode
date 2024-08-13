@@ -207,7 +207,7 @@ UnicodeStringIterator Utf8String::erase(const UnicodeStringIterator &it, const U
 	auto idx1 = itEnd.iterator->getIndex();
 	if(idx1 <= idx0)
 		return it;
-	return erase(it, (idx1 - idx0) + 1);
+	return erase(it, idx1 - idx0);
 }
 void Utf8String::insert(const UnicodeStringIterator &it, const Utf8StringArg &str) { m_string->insert(it.iterator->getIndex(), str->GetIcuString()); }
 Utf8String Utf8String::substr(size_t start, size_t count) const
