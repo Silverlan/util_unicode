@@ -248,8 +248,8 @@ Utf8String Utf8StringView::to_str() const { return {*this}; }
 ////////////////////
 
 UnicodeStringIterator::UnicodeStringIterator() : iterator {}, done {false} {}
-UnicodeStringIterator::UnicodeStringIterator(const BaseUtf8String &str) : iterator {std::make_unique<icu::StringCharacterIterator>(str.GetIcuString())}, done {false} {}
-UnicodeStringIterator::UnicodeStringIterator(const UnicodeStringIterator &it) : iterator {std::make_unique<icu::StringCharacterIterator>(*it.iterator)}, done {false} {}
+UnicodeStringIterator::UnicodeStringIterator(const BaseUtf8String &str) : iterator {std::make_unique<icu::StringCharacterIterator>(str.GetIcuString())}, done {str.empty()} {}
+UnicodeStringIterator::UnicodeStringIterator(const UnicodeStringIterator &it) : iterator {std::make_unique<icu::StringCharacterIterator>(*it.iterator)}, done {it.done} {}
 
 UnicodeStringIterator::~UnicodeStringIterator() {}
 
