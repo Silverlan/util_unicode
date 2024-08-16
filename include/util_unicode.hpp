@@ -52,7 +52,7 @@ namespace util {
 	  public:
 		static constexpr inline size_t npos = std::string::npos;
 		friend UnicodeStringIterator;
-		~BaseUtf8String();
+		virtual ~BaseUtf8String();
 		std::string cpp_str() const;
 		size_t find(Char8 c, size_t startPos = 0) const;
 		size_t find(Char16 c, size_t startPos = 0) const;
@@ -150,6 +150,10 @@ namespace util {
 		Utf8StringView &operator=(const Utf8StringView &str);
 		Utf8StringView substr(size_t start, size_t count = std::numeric_limits<size_t>::max()) const;
 		Utf8String to_str() const;
+	  private:
+		const icu_75::UnicodeString *m_underlyingString = nullptr;
+		size_t m_start = 0;
+		size_t m_length = std::numeric_limits<size_t>::max();
 	};
 
 	class DLLUUNIC Utf8StringArg {

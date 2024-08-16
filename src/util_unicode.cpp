@@ -222,17 +222,26 @@ void Utf8String::clear() { m_string->remove(); }
 ////////////////////
 
 Utf8StringView::Utf8StringView() : BaseUtf8String {} {}
-Utf8StringView::Utf8StringView(const Utf8String &str) : BaseUtf8String {} { m_string->fastCopyFrom(*str.m_string); }
-Utf8StringView::Utf8StringView(const Utf8StringView &str) : BaseUtf8String {} { m_string->fastCopyFrom(*str.m_string); }
+Utf8StringView::Utf8StringView(const Utf8String &str) : BaseUtf8String {} { operator=(str); }
+Utf8StringView::Utf8StringView(const Utf8StringView &str) : BaseUtf8String {} { operator=(str); }
 Utf8StringView::~Utf8StringView() {}
 Utf8StringView &Utf8StringView::operator=(const Utf8String &str)
 {
 	m_string->fastCopyFrom(*str.m_string);
+	m_underlyingString = str.m_string.get();
+	m_start = 0;
+	m_length = str.length();
 	return *this;
 }
 Utf8StringView &Utf8StringView::operator=(const Utf8StringView &str)
 {
-	m_string->fastCopyFrom(*str.m_string);
+	m_underlyingString = str.m_underlyingString;
+	m_start = str.m_start;
+	m_length = str.m_length;
+	if(m_underlyingString)
+		m_string->fastCopyFrom(m_underlyingString->tempSubString(m_start, m_length));
+	else
+		m_string = std::make_unique<icu::UnicodeString>();
 	return *this;
 }
 Utf8StringView Utf8StringView::substr(size_t start, size_t count) const
@@ -240,7 +249,13 @@ Utf8StringView Utf8StringView::substr(size_t start, size_t count) const
 	if(count > INT32_MAX)
 		count = INT32_MAX;
 	Utf8StringView sub {};
-	sub.m_string->fastCopyFrom(m_string->tempSubString(start, count));
+	sub.m_underlyingString = m_underlyingString;
+	sub.m_start = m_start + start;
+	sub.m_length = std::min(m_start + m_length, m_start + start + count) - sub.m_start;
+	if(m_underlyingString)
+		sub.m_string->fastCopyFrom(m_underlyingString->tempSubString(sub.m_start, sub.m_length));
+	else
+		sub.m_string = std::make_unique<icu::UnicodeString>();
 	return sub;
 }
 Utf8String Utf8StringView::to_str() const { return {*this}; }
