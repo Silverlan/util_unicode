@@ -2,11 +2,17 @@
 * License, v. 2.0. If a copy of the MPL was not distributed with this
 * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "util_unicode.hpp"
+module;
+
 #include <unicode/unistr.h>
 #include <unicode/schriter.h>
+#include <memory>
 
-using namespace util;
+module unicode;
+
+import :utf8;
+
+using namespace pragma::string;
 
 BaseUtf8String::BaseUtf8String() : m_string {std::make_unique<icu::UnicodeString>()} {}
 BaseUtf8String::BaseUtf8String(std::unique_ptr<icu_75::UnicodeString> &&str) : m_string {std::move(str)} {}
@@ -330,20 +336,20 @@ UnicodeStringIterator &UnicodeStringIterator::operator=(const UnicodeStringItera
 
 Utf8StringArg::Utf8StringArg(const char *text) : m_cpy {std::make_unique<Utf8String>(text)}, m_view {*m_cpy} {}
 Utf8StringArg::Utf8StringArg(const std::string &text) : m_cpy {std::make_unique<Utf8String>(text)}, m_view {*m_cpy} {}
-Utf8StringArg::Utf8StringArg(const util::Utf8String &text) : m_cpy {std::make_unique<Utf8String>(text)}, m_view {*m_cpy} {}
-Utf8StringArg::Utf8StringArg(const util::Utf8StringView &text) : m_view {text} {}
+Utf8StringArg::Utf8StringArg(const Utf8String &text) : m_cpy {std::make_unique<Utf8String>(text)}, m_view {*m_cpy} {}
+Utf8StringArg::Utf8StringArg(const Utf8StringView &text) : m_view {text} {}
 Utf8StringArg::~Utf8StringArg() {}
-const util::Utf8StringView &Utf8StringArg::operator*() const { return m_view; }
-const util::Utf8StringView *Utf8StringArg::operator->() const { return &m_view; }
+const Utf8StringView &Utf8StringArg::operator*() const { return m_view; }
+const Utf8StringView *Utf8StringArg::operator->() const { return &m_view; }
 
 //////////////////////////
 
-std::ostream &operator<<(std::ostream &out, const util::Utf8String &str)
+std::ostream &operator<<(std::ostream &out, const Utf8String &str)
 {
 	out << str.cpp_str();
 	return out;
 }
-std::ostream &operator<<(std::ostream &out, const util::Utf8StringView &str)
+std::ostream &operator<<(std::ostream &out, const Utf8StringView &str)
 {
 	out << str.cpp_str();
 	return out;

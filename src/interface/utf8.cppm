@@ -2,21 +2,17 @@
 * License, v. 2.0. If a copy of the MPL was not distributed with this
 * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef __UTIL_UNICODE_HPP__
-#define __UTIL_UNICODE_HPP__
+module;
 
-#include "util_unicode_definitions.hpp"
+#include "definitions.hpp"
 #include <memory>
 #include <string>
 #include <ostream>
 #include <limits>
 
-namespace icu_75 {
-	class StringCharacterIterator;
-	class UnicodeString;
-};
+export module unicode:utf8;
 
-namespace util {
+export namespace pragma::string {
 	class Utf8String;
 	class BaseUtf8String;
 	using Char8 = char;
@@ -160,18 +156,16 @@ namespace util {
 	  public:
 		Utf8StringArg(const char *text);
 		Utf8StringArg(const std::string &text);
-		Utf8StringArg(const util::Utf8String &text);
-		Utf8StringArg(const util::Utf8StringView &text);
+		Utf8StringArg(const Utf8String &text);
+		Utf8StringArg(const Utf8StringView &text);
 		~Utf8StringArg();
-		const util::Utf8StringView &operator*() const;
-		const util::Utf8StringView *operator->() const;
+		const Utf8StringView &operator*() const;
+		const Utf8StringView *operator->() const;
 	  private:
-		std::unique_ptr<util::Utf8String> m_cpy;
-		util::Utf8StringView m_view;
+		std::unique_ptr<Utf8String> m_cpy;
+		Utf8StringView m_view;
 	};
 };
 
-DLLUUNIC std::ostream &operator<<(std::ostream &out, const util::Utf8String &str);
-DLLUUNIC std::ostream &operator<<(std::ostream &out, const util::Utf8StringView &str);
-
-#endif
+export DLLUUNIC std::ostream &operator<<(std::ostream &out, const pragma::string::Utf8String &str);
+export DLLUUNIC std::ostream &operator<<(std::ostream &out, const pragma::string::Utf8StringView &str);

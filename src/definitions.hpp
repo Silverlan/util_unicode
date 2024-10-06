@@ -21,4 +21,9 @@
 #endif
 #endif
 
+namespace icu_75 {
+	class StringCharacterIterator;
+	class UnicodeString;
+};
+
 #endif

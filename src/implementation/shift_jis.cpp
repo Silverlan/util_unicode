@@ -2,13 +2,18 @@
 * License, v. 2.0. If a copy of the MPL was not distributed with this
 * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "shift_jis.hpp"
+module;
+
 #include <fstream>
 #include <vector>
 
+module unicode;
+
+import :shift_jis;
+
 static std::vector<uint8_t> g_convTable;
 static bool g_convTableInitialized = false;
-void util::init_shift_jis(const std::string &dataFilePath)
+void pragma::string::unicode::init_shift_jis(const std::string &dataFilePath)
 {
 	if(g_convTableInitialized)
 		return;
@@ -86,7 +91,7 @@ static std::string sj2utf8(const std::vector<uint8_t> &convTable, const std::str
 	return output;
 }
 
-std::string util::shift_jis_to_utf8(const std::string &input, bool validate)
+std::string pragma::string::unicode::shift_jis_to_utf8(const std::string &input, bool validate)
 {
 	if(!g_convTableInitialized)
 		throw std::runtime_error {"Shift_JIS has not been initialized! Make sure to run init_shift_jis first!"};

@@ -22,7 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "shift_jis.hpp"
+module;
+
+#include <cinttypes>
+#include <string>
+
+module unicode;
+
+import :shift_jis;
 
 // Source: https://github.com/drojaazu/jstrings/blob/master/inc/enc_shiftjis.hpp
 
@@ -113,4 +120,4 @@ static uint validate_shift_jis(byte_t const *data)
 	// clang-format on
 	return 0;
 }
-uint32_t util::validate_shift_jis(const std::string &data) { return ::validate_shift_jis(data.c_str()); }
+uint32_t pragma::string::unicode::validate_shift_jis(const std::string &data) { return ::validate_shift_jis(data.c_str()); }
