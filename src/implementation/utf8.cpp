@@ -8,7 +8,7 @@ module;
 #include <unicode/schriter.h>
 #include <memory>
 
-module unicode;
+module pragma.string.unicode;
 
 import :utf8;
 

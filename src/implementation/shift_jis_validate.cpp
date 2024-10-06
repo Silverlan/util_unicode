@@ -27,7 +27,7 @@ module;
 #include <cinttypes>
 #include <string>
 
-module unicode;
+module pragma.string.unicode;
 
 import :shift_jis;
 

@@ -10,7 +10,7 @@ module;
 #include <ostream>
 #include <limits>
 
-export module unicode:utf8;
+export module pragma.string.unicode:utf8;
 
 export namespace pragma::string {
 	class Utf8String;

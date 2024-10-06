@@ -8,7 +8,7 @@ module;
 #include <string>
 #include <cinttypes>
 
-export module unicode:shift_jis;
+export module pragma.string.unicode:shift_jis;
 
 export namespace pragma::string::unicode {
 	DLLUUNIC void init_shift_jis(const std::string &dataFilePath);

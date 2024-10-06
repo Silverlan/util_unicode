@@ -7,7 +7,7 @@ module;
 #include <fstream>
 #include <vector>
 
-module unicode;
+module pragma.string.unicode;
 
 import :shift_jis;
 
