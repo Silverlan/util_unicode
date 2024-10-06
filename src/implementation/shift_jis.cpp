@@ -6,6 +6,7 @@ module;
 
 #include <fstream>
 #include <vector>
+#include <cinttypes>
 
 module pragma.string.unicode;
 
