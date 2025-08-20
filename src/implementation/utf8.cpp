@@ -14,10 +14,10 @@ import :utf8;
 using namespace pragma::string;
 
 BaseUtf8String::BaseUtf8String() : m_string {std::make_unique<icu::UnicodeString>()} {}
-BaseUtf8String::BaseUtf8String(std::unique_ptr<icu_75::UnicodeString> &&str) : m_string {std::move(str)} {}
+BaseUtf8String::BaseUtf8String(std::unique_ptr<icu_77::UnicodeString> &&str) : m_string {std::move(str)} {}
 BaseUtf8String::~BaseUtf8String() {}
-icu_75::UnicodeString &BaseUtf8String::GetIcuString() { return *m_string; }
-const icu_75::UnicodeString &BaseUtf8String::GetIcuString() const { return *m_string; }
+icu_77::UnicodeString &BaseUtf8String::GetIcuString() { return *m_string; }
+const icu_77::UnicodeString &BaseUtf8String::GetIcuString() const { return *m_string; }
 size_t BaseUtf8String::length() const { return m_string->countChar32(); }
 size_t BaseUtf8String::size() const { return length(); }
 
@@ -326,7 +326,7 @@ UnicodeStringIterator &UnicodeStringIterator::operator+=(int32_t idx)
 
 UnicodeStringIterator &UnicodeStringIterator::operator=(const UnicodeStringIterator &other)
 {
-	iterator = std::make_unique<icu_75::StringCharacterIterator>(*other.iterator);
+	iterator = std::make_unique<icu_77::StringCharacterIterator>(*other.iterator);
 	done = other.done;
 	return *this;
 }
