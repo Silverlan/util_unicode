@@ -164,7 +164,6 @@ export namespace pragma::string {
 		std::unique_ptr<Utf8String> m_cpy;
 		Utf8StringView m_view;
 	};
+	DLLUUNIC std::ostream &operator<<(std::ostream &out, const Utf8String &str);
+	DLLUUNIC std::ostream &operator<<(std::ostream &out, const Utf8StringView &str);
 };
-
-export DLLUUNIC std::ostream &operator<<(std::ostream &out, const pragma::string::Utf8String &str);
-export DLLUUNIC std::ostream &operator<<(std::ostream &out, const pragma::string::Utf8StringView &str);

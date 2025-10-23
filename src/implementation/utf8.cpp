@@ -343,12 +343,12 @@ const Utf8StringView *Utf8StringArg::operator->() const { return &m_view; }
 
 //////////////////////////
 
-std::ostream &operator<<(std::ostream &out, const Utf8String &str)
+std::ostream &pragma::string::operator<<(std::ostream &out, const Utf8String &str)
 {
 	out << str.cpp_str();
 	return out;
 }
-std::ostream &operator<<(std::ostream &out, const Utf8StringView &str)
+std::ostream &pragma::string::operator<<(std::ostream &out, const Utf8StringView &str)
 {
 	out << str.cpp_str();
 	return out;
