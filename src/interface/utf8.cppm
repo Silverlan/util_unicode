@@ -4,12 +4,10 @@
 module;
 
 #include "definitions.hpp"
-#include <memory>
-#include <string>
-#include <ostream>
-#include <limits>
 
 export module pragma.string.unicode:utf8;
+
+export import std.compat;
 
 export namespace pragma::string {
 	class Utf8String;

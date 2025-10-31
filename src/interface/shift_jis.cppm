@@ -4,10 +4,10 @@
 module;
 
 #include "definitions.hpp"
-#include <string>
-#include <cinttypes>
 
 export module pragma.string.unicode:shift_jis;
+
+export import std.compat;
 
 export namespace pragma::string::unicode {
 	DLLUUNIC void init_shift_jis(const std::string &dataFilePath);

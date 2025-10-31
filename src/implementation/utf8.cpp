@@ -5,7 +5,6 @@ module;
 
 #include <unicode/unistr.h>
 #include <unicode/schriter.h>
-#include <memory>
 
 module pragma.string.unicode;
 
