@@ -37,7 +37,7 @@ export namespace pragma::string {
 	  private:
 		friend BaseUtf8String;
 		UnicodeStringIterator();
-		std::unique_ptr<icu_77::StringCharacterIterator> iterator;
+		std::unique_ptr<icu_78::StringCharacterIterator> iterator;
 		bool done;
 	};
 
@@ -78,10 +78,10 @@ export namespace pragma::string {
 		operator std::string() const;
 	  protected:
 		BaseUtf8String();
-		BaseUtf8String(std::unique_ptr<icu_77::UnicodeString> &&str);
-		icu_77::UnicodeString &GetIcuString();
-		const icu_77::UnicodeString &GetIcuString() const;
-		std::unique_ptr<icu_77::UnicodeString> m_string;
+		BaseUtf8String(std::unique_ptr<icu_78::UnicodeString> &&str);
+		icu_78::UnicodeString &GetIcuString();
+		const icu_78::UnicodeString &GetIcuString() const;
+		std::unique_ptr<icu_78::UnicodeString> m_string;
 	};
 
 	class Utf8StringView;
@@ -144,7 +144,7 @@ export namespace pragma::string {
 		Utf8StringView substr(size_t start, size_t count = std::numeric_limits<size_t>::max()) const;
 		Utf8String to_str() const;
 	  private:
-		const icu_77::UnicodeString *m_underlyingString = nullptr;
+		const icu_78::UnicodeString *m_underlyingString = nullptr;
 		size_t m_start = 0;
 		size_t m_length = std::numeric_limits<size_t>::max();
 	};
