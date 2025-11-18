@@ -3,10 +3,6 @@
 
 module;
 
-#include <fstream>
-#include <vector>
-#include <cinttypes>
-
 module pragma.string.unicode;
 
 import :shift_jis;

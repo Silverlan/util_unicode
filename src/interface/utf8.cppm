@@ -4,12 +4,10 @@
 module;
 
 #include "definitions.hpp"
-#include <memory>
-#include <string>
-#include <ostream>
-#include <limits>
 
 export module pragma.string.unicode:utf8;
+
+export import std.compat;
 
 export namespace pragma::string {
 	class Utf8String;
@@ -39,7 +37,7 @@ export namespace pragma::string {
 	  private:
 		friend BaseUtf8String;
 		UnicodeStringIterator();
-		std::unique_ptr<icu_77::StringCharacterIterator> iterator;
+		std::unique_ptr<icu_78::StringCharacterIterator> iterator;
 		bool done;
 	};
 
@@ -80,10 +78,10 @@ export namespace pragma::string {
 		operator std::string() const;
 	  protected:
 		BaseUtf8String();
-		BaseUtf8String(std::unique_ptr<icu_77::UnicodeString> &&str);
-		icu_77::UnicodeString &GetIcuString();
-		const icu_77::UnicodeString &GetIcuString() const;
-		std::unique_ptr<icu_77::UnicodeString> m_string;
+		BaseUtf8String(std::unique_ptr<icu_78::UnicodeString> &&str);
+		icu_78::UnicodeString &GetIcuString();
+		const icu_78::UnicodeString &GetIcuString() const;
+		std::unique_ptr<icu_78::UnicodeString> m_string;
 	};
 
 	class Utf8StringView;
@@ -146,7 +144,7 @@ export namespace pragma::string {
 		Utf8StringView substr(size_t start, size_t count = std::numeric_limits<size_t>::max()) const;
 		Utf8String to_str() const;
 	  private:
-		const icu_77::UnicodeString *m_underlyingString = nullptr;
+		const icu_78::UnicodeString *m_underlyingString = nullptr;
 		size_t m_start = 0;
 		size_t m_length = std::numeric_limits<size_t>::max();
 	};
@@ -164,7 +162,6 @@ export namespace pragma::string {
 		std::unique_ptr<Utf8String> m_cpy;
 		Utf8StringView m_view;
 	};
+	DLLUUNIC std::ostream &operator<<(std::ostream &out, const Utf8String &str);
+	DLLUUNIC std::ostream &operator<<(std::ostream &out, const Utf8StringView &str);
 };
-
-export DLLUUNIC std::ostream &operator<<(std::ostream &out, const pragma::string::Utf8String &str);
-export DLLUUNIC std::ostream &operator<<(std::ostream &out, const pragma::string::Utf8StringView &str);

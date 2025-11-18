@@ -20,7 +20,7 @@
 #endif
 #endif
 
-namespace icu_77 {
+namespace icu_78 {
 	class StringCharacterIterator;
 	class UnicodeString;
 };
