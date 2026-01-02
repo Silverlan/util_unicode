@@ -2,6 +2,7 @@ include(${CMAKE_SOURCE_DIR}/cmake/pr_common.cmake)
 
 set(PROJ_NAME util_unicode)
 pr_add_library(${PROJ_NAME} SHARED)
+pr_add_export_macro(${PROJ_NAME} DLLUUNIC)
 
 pr_add_external_dependency(${PROJ_NAME} icu LIBRARY)
 
