@@ -333,11 +333,34 @@ UnicodeStringIterator &UnicodeStringIterator::operator=(const UnicodeStringItera
 
 ////////////////////
 
-Utf8StringArg::Utf8StringArg(const char *text) : m_cpy {std::make_unique<Utf8String>(text)}, m_view {*m_cpy} {}
-Utf8StringArg::Utf8StringArg(const std::string &text) : m_cpy {std::make_unique<Utf8String>(text)}, m_view {*m_cpy} {}
-Utf8StringArg::Utf8StringArg(const Utf8String &text) : m_cpy {std::make_unique<Utf8String>(text)}, m_view {*m_cpy} {}
-Utf8StringArg::Utf8StringArg(const Utf8StringView &text) : m_view {text} {}
+Utf8StringArg::Utf8StringArg(const char *text) { operator=(text); }
+Utf8StringArg::Utf8StringArg(const std::string &text) { operator=(text); }
+Utf8StringArg::Utf8StringArg(const Utf8String &text) { operator=(text); }
+Utf8StringArg::Utf8StringArg(const Utf8StringView &text) { operator=(text); }
 Utf8StringArg::~Utf8StringArg() {}
+Utf8StringArg &Utf8StringArg::operator=(const char *text)
+{
+	m_cpy = std::make_unique<Utf8String>(text);
+	m_view = *m_cpy;
+	return *this;
+}
+Utf8StringArg &Utf8StringArg::operator=(const std::string &text)
+{
+	m_cpy = std::make_unique<Utf8String>(text);
+	m_view = *m_cpy;
+	return *this;
+}
+Utf8StringArg &Utf8StringArg::operator=(const Utf8String &text)
+{
+	m_cpy = std::make_unique<Utf8String>(text);
+	m_view = *m_cpy;
+	return *this;
+}
+Utf8StringArg &Utf8StringArg::operator=(const Utf8StringView &text)
+{
+	m_view = text;
+	return *this;
+}
 const Utf8StringView &Utf8StringArg::operator*() const { return m_view; }
 const Utf8StringView *Utf8StringArg::operator->() const { return &m_view; }
 

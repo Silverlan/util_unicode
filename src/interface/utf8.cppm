@@ -156,6 +156,10 @@ export namespace pragma::string {
 		Utf8StringArg(const Utf8String &text);
 		Utf8StringArg(const Utf8StringView &text);
 		~Utf8StringArg();
+		Utf8StringArg &operator=(const char *text);
+		Utf8StringArg &operator=(const std::string &text);
+		Utf8StringArg &operator=(const Utf8String &tex);
+		Utf8StringArg &operator=(const Utf8StringView &tex);
 		const Utf8StringView &operator*() const;
 		const Utf8StringView *operator->() const;
 	  private:
